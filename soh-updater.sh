@@ -14,7 +14,7 @@ fi
 title="Ship of Harkinian Updater"
 
 menu() {
-	zenity --width 1000 --height 350 --list --radiolist --multiple --title "$title"\
+	zenity --width 900 --height 350 --list --radiolist --multiple --title "$title"\
 	--column "Select an Option" \
 	--column "Option" \
 	--column="Description"\

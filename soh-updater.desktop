@@ -1,6 +1,6 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Exec=curl -L https://raw.githubusercontent.com/linuxgamingcentral/ship-of-harkinian-updater/main/soh-updater.sh | sh
+Exec=curl https://raw.githubusercontent.com/linuxgamingcentral/ship-of-harkinian-updater/main/soh-updater.sh | bash -s --
 Icon=steamdeck-gaming-return
 Name=Ship of Harkinian Updater
 StartupNotify=false

@@ -1,6 +1,6 @@
 #!/usr/bin/env xdg-open
 [Desktop Entry]
-Exec=curl https://raw.githubusercontent.com/linuxgamingcentral/ship-of-harkinian-updater/main/soh-updater.sh | bash -s --
+Exec=sh -c 'rm -f /tmp/soh-updater.sh; if curl -S -s -L -O --output-dir /tmp/ --connect-timeout 60 https://raw.githubusercontent.com/linuxgamingcentral/ship-of-harkinian-updater/main/soh-updater.sh; then bash /tmp/soh-updater.sh; else echo "Something went wrong, please report this if it is a bug"; read; fi'
 Icon=steamdeck-gaming-return
 Name=Ship of Harkinian Updater
 StartupNotify=false

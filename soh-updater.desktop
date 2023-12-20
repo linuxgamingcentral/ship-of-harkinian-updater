@@ -1,0 +1,8 @@
+#!/usr/bin/env xdg-open
+[Desktop Entry]
+Exec=cd /tmp/ && rm -f soh-updater.sh && curl -L https://raw.githubusercontent.com/linuxgamingcentral/ship-of-harkinian-updater/main/soh-updater.sh | sh
+Icon=steamdeck-gaming-return
+Name=Ship of Harkinian Updater
+StartupNotify=false
+Terminal=true
+Type=Application

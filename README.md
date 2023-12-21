@@ -9,4 +9,4 @@ If you're on Steam Deck, download the [desktop file](https://raw.githubuserconte
 
 `curl -L https://raw.githubusercontent.com/linuxgamingcentral/ship-of-harkinian-updater/main/soh-updater.sh | sh`
 
-The script will create a `soh` folder in the same directory that the script was run. Put your legally-dumped ROM inside of this folder in order to play SoH (see my [ROM dumping guide for Steam Deck](https://linuxgamingcentral.com/posts/ship-of-harkinian-steam-deck-guide/) if you need to get your ROM dumped).
+The script will create a `ship-of-harkinian` folder in `~/Applications/`. Put your legally-dumped ROM inside of this folder in order to play SoH (see my [ROM dumping guide for Steam Deck](https://linuxgamingcentral.com/posts/ship-of-harkinian-steam-deck-guide/) if you need to get your ROM dumped).

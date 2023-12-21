@@ -13,7 +13,7 @@ fi
 
 title="Ship of Harkinian Updater"
 
-menu() {
+main_menu() {
 	zenity --width 900 --height 350 --list --radiolist --multiple --title "$title"\
 	--column "Select an Option" \
 	--column "Option" \
@@ -27,7 +27,7 @@ menu() {
 	TRUE Exit "Exit this script"
 }
 
-sub_menu() {
+mod_menu() {
 	zenity --width 600 --height 350 --list --radiolist --multiple --title "$title"\
 	--column "Select an Option" \
 	--column "Option" \
@@ -41,26 +41,24 @@ sub_menu() {
 	TRUE Main "Go back"
 }
 
-download_mod(){
+download_mod() {
 	l=$1
 	n=$2
 	m=$3
 	curl -L $1 -o $2
 	unzip -o $2 -d mods/
 	rm $2
-	message "$3 downloaded!"
-	message "Note you will need to use alternate assets in Enhancements -> Graphics -> Mods in order to use this.\nYou may also need to disable grotto fixed rotation in the same menu if you have the 3DS textures installed."
+	message "$3 downloaded! Make sure \"Use Alternate Assets\" is checked on in Enhancements -> Graphics -> Mods.\nIf you're using the 3DS textures you'll also need to disable Grotto Fixed Rotation in the same menu."
 }
 
-download_oot_reloaded(){
+download_oot_reloaded() {
 	l=$1
 	n=$2
 	m=$3
 	curl -L $1 -o $2
 	7za x $2 -o/$PWD/mods
 	rm $2
-	message "$3 downloaded!"
-	message "Note you will need to use alternate assets in Enhancements -> Graphics -> Mods in order to use this."
+	message "$3 installed! Make sure \"Use Alternate Assets\" is checked on in Enhancements -> Graphics -> Mods."
 }
 
 message() {
@@ -82,18 +80,22 @@ progress_bar() {
 	fi
 }
 
-mkdir -p soh
-cd soh
+cd $HOME
+mkdir -p Applications
+cd Applications
+mkdir -p ship-of-harkinian
+cd ship-of-harkinian
 mkdir -p mods
 
 # Main menu
 while true; do
-Choice=$(menu)
+Choice=$(main_menu)
 	if [ $? -eq 1 ] || [ "$Choice" == "Exit" ]; then
 		echo Goodbye!
 		exit
 
 	elif [ "$Choice" == "Download" ]; then
+		(
 		echo -e "Downloading...\n"
 		curl -L $(curl -s https://api.github.com/repos/HarbourMasters/Shipwright/releases/latest | grep "browser_download_url" | grep "Linux-Performance.zip" | cut -d '"' -f 4) -o soh-performance.zip
 			
@@ -101,6 +103,7 @@ Choice=$(menu)
 		unzip -o soh-performance.zip
 		rm soh-performance.zip
 		chmod +x soh.appimage
+		) | progress_bar "Downloading/updating, please wait..."
 		message "Download/update complete!"
 
 	elif [ "$Choice" == "Changelog" ]; then
@@ -115,7 +118,7 @@ Choice=$(menu)
 
 	elif [ "$Choice" == "Mods" ]; then
 		while true; do
-		Choice=$(sub_menu)
+		Choice=$(mod_menu)
 			if [ $? -eq 1 ] || [ "$Choice" == "Main" ]; then
 				break
 			
@@ -164,8 +167,13 @@ Choice=$(menu)
 		xdg-open https://linuxgamingcentral.com/posts/ship-of-harkinian-steam-deck-guide/
 
 	elif [ "$Choice" == "Uninstall" ]; then
-		rm -rf logs/
-		rm imgui.ini oot.otr readme.txt soh.appimage
-		message "Uninstall complete. Your ROM, save data, mods, and configuration data have been preserved."
+		if ( question "Are you sure you want to uninstall (your save/configuration data will be preserved)?" ); then
+		yes | 
+			rm -rf logs/
+			rm imgui.ini oot.otr readme.txt soh.appimage
+			message "Uninstall complete. Your ROM, save data, mods, and configuration data have been preserved."
+		else
+			echo -e "User selected No.\n"
+		fi
 	fi
 done

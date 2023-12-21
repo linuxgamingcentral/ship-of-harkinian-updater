@@ -164,7 +164,7 @@ Choice=$(main_menu)
 		done	
 
 	elif [ "$Choice" == "Dumping" ]; then
-		xdg-open https://linuxgamingcentral.com/posts/ship-of-harkinian-steam-deck-guide/
+		xdg-open https://linuxgamingcentral.com/posts/ship-of-harkinian-steam-deck-guide/?utm_source=Updater
 
 	elif [ "$Choice" == "Uninstall" ]; then
 		if ( question "Are you sure you want to uninstall (your save/configuration data will be preserved)?" ); then

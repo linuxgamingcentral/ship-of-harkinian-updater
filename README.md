@@ -1,4 +1,4 @@
-# Ship of Harknian Updater for Steam Deck/Linux
+# Ship of Harkinian Updater for Steam Deck/Linux
 Ship of Harkinian (*Zelda: OoT* PC port) installer and updater for Steam Deck/Linux.
 
 ![Screenshot from 2023-12-20 16-54-07](https://github.com/linuxgamingcentral/ship-of-harkinian-updater/assets/101075966/d86a85ec-07c4-4bdf-9176-937f03587865)

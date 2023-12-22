@@ -130,7 +130,6 @@ Choice=$(main_menu)
 				case $? in
 		 		0)
 		        		echo "\"$ROM\" selected."
-		        		cp $ROM $HOME/Applications/soh/
 		        		mv $ROM zelda64.z64
 		        		./soh.appimage;;
 		 		1)

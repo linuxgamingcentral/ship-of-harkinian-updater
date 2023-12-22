@@ -17,7 +17,7 @@ title="Ship of Harkinian Updater"
 if [ $USER != "deck" ]; then
 	STEAMID=$(find ~/.steam/debian-installation/userdata/ -mindepth 1 -maxdepth 1 -type d | sed -n '2p')
 else
-	STEAMID=$(find ~/.local/share/Steam/userdata/ -mindepth 1 -maxdepth 1 -type d | sed -n '2p')
+	STEAMID=$(find ~/.local/share/Steam/userdata/ -mindepth 1 -maxdepth 1 -type d)
 fi
 STEAMID=$(basename "$STEAMID")
 echo -e "Steam ID is $STEAMID\n"

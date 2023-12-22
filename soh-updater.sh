@@ -13,6 +13,15 @@ fi
 
 title="Ship of Harkinian Updater"
 
+# get SteamID - for adding SoH as a non-Steam shortcut
+if [ $USER != "deck" ]; then
+	STEAMID=$(find ~/.steam/debian-installation/userdata/ -mindepth 1 -maxdepth 1 -type d | sed -n '2p')
+else
+	STEAMID=$(find ~/.local/share/Steam/userdata/ -mindepth 1 -maxdepth 1 -type d | sed -n '2p')
+fi
+STEAMID=$(basename "$STEAMID")
+echo -e "Steam ID is $STEAMID\n"
+
 main_menu() {
 	zenity --width 900 --height 350 --list --radiolist --multiple --title "$title"\
 	--column "Select an Option" \
@@ -21,6 +30,7 @@ main_menu() {
 	FALSE Download "Download or update SoH"\
 	FALSE Changelog "View changelog (your web browser will open)"\
 	FALSE Play "Play SoH"\
+	FALSE Steam "Add SoH as a non-Steam shortcut"\
 	FALSE Mods "Get mods"\
 	FALSE Dumping "View ROM dumping guide (for Steam Deck, will open your web browser)"\
 	FALSE Uninstall "Uninstall SoH"\
@@ -113,7 +123,41 @@ Choice=$(main_menu)
 		if ! [ -f soh.appimage ]; then
 			message "SoH AppImage not found."
 		else
-			./soh.appimage
+			# if ROM isn't found in soh directory, ask user to locate it
+			if ! [ -f zelda64.z64 ]; then
+				ROM=`zenity --file-selection --file-filter='ROM file (z64) | *.z64' --title="Select ROM"`
+
+				case $? in
+		 		0)
+		        		echo "\"$ROM\" selected."
+		        		cp $ROM $HOME/Applications/soh/
+		        		mv $ROM zelda64.z64
+		        		./soh.appimage;;
+		 		1)
+		        		echo "No file selected.";;
+				-1)
+		        		echo "An unexpected error has occurred.";;
+				esac
+			else
+				./soh.appimage
+			fi
+		fi
+	
+	elif [ "$Choice" == "Steam" ]; then
+		if ! [ -f soh.appimage ]; then
+			message "SoH AppImage not found."
+		else
+			# temporarily download some python scripts, execute them, then remove them when we're done
+			wget https://raw.githubusercontent.com/linuxgamingcentral/Steam-Shortcut-Manager/master/shortcuts.py
+			wget https://raw.githubusercontent.com/linuxgamingcentral/Steam-Shortcut-Manager/master/crc_algorithms.py
+			if [ $USER != "deck" ]; then
+				python shortcuts.py "$HOME/.steam/debian-installation/userdata/$STEAMID/config/shortcuts.vdf" "Ship of Harkinian" "$HOME/Applications/ship-of-harkinian/soh.appimage" $HOME/Applications/ship-of-harkinian/ "" "" "" 0 0 1 0 0 SoH
+			else
+				python shortcuts.py "$HOME/.local/share/Steam/userdata/$STEAMID/config/shortcuts.vdf" "Ship of Harkinian" "$HOME/Applications/ship-of-harkinian/soh.appimage" $HOME/Applications/ship-of-harkinian/ "" "" "" 0 0 1 0 0 SoH
+			fi
+			rm shortcuts.py crc_algorithms.py
+			rm -rf __pycache__
+			message "SoH added as a non-Steam shortcut! Note if Steam is open you'll need to restart it to see the changes."
 		fi
 
 	elif [ "$Choice" == "Mods" ]; then
